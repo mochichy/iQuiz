@@ -11,12 +11,16 @@ import UIKit
 class questionTableViewController: UIViewController {
     var stringPassed = String()
     @IBOutlet weak var question: UILabel!
+    @IBOutlet weak var q: UILabel!
+    
+    var appdata = AppData.shared
     
     override func viewWillAppear(_ animated: Bool) {
         question.text = stringPassed
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        q.text = appdata.questions[stringPassed]?[0]
         // Do any additional setup after loading the view.
     }
 
