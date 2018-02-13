@@ -8,13 +8,13 @@
 
 import UIKit
 
-class tableTableViewController: UIViewController, UITableViewDataSource {
+class tableTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     var appdata = AppData.shared
     //let topic = ["Mathematics", "Marvel Super Heroes", "Science"]
     
-    
+    var valueToPass: String!
     //@IBOutlet weak var btnSetting: UIBarButtonItem!
     @IBAction func btnSetting(_ sender: Any) {
         let alertVC = UIAlertController(title: "Settings",
@@ -32,6 +32,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         print(appdata.categories)
         tableView.dataSource = self
+        tableView.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -62,7 +63,40 @@ class tableTableViewController: UIViewController, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let topic = appdata.categories[indexPath.row]
+        NSLog("User selected row at \(topic)")
+        //let myVC = storyboard?.instantiateViewController(withIdentifier: "questionVC") as! questionTableViewController
+        
+       /* let myVC = questionTableViewController()
+        print(myVC)
+        myVC.stringPassed = "?"
+        navigationController?.pushViewController(myVC, animated: true)
+        let Storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let destinationVC = Storyboard.instantiateViewController(withIdentifier: "questionVC") as! questionTableViewController
+        let destinationVC = questionTableViewController()
+        destinationVC.stringPassed = "?"
+        self.performSegue(withIdentifier: "qseg", sender: self)
+        let indexPath = tableView.indexPathForSelectedRow!
+        let currentCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
+        
+        valueToPass = currentCell.textLabel?.text
+        performSegue(withIdentifier: "qseg", sender: self)*/
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
+        /*let talkView = segue.destination as! ViewController
+        talkView.history = history*/
+        let selectedRow = tableView.indexPathForSelectedRow!.row
+        
+        if (segue.identifier == "qseg") {
+            let viewController = segue.destination as! questionTableViewController
+
+            viewController.stringPassed = appdata.categories[selectedRow]
+        }
+    }
     /*
     // MARK: - Navigation
 
