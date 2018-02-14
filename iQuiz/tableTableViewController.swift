@@ -47,19 +47,16 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        NSLog("count")
         return appdata.categories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         NSLog("\(indexPath)")
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath) as! TableViewCell
         let topic = appdata.categories[indexPath.row]
         let descr = appdata.descriptions[indexPath.row]
         cell.title.text = topic
         cell.descr.text = descr
         cell.img.image = UIImage(named: topic)
-        NSLog(appdata.categories[indexPath.row])
         return cell
     }
     

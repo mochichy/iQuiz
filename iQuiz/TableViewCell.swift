@@ -11,6 +11,7 @@ import UIKit
 class TableViewCell: UITableViewCell {
 
     
+    @IBOutlet weak var potentialA: UILabel!
     @IBOutlet weak var descr: UILabel!
     //@IBOutlet weak var description: UILabel!
     @IBOutlet weak var img: UIImageView!
