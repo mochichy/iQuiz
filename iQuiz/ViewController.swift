@@ -13,12 +13,18 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var score: UILabel!
     
+    @IBOutlet weak var finished: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let all = appdata.questions[appdata.currentTopic]?.count
         score.text = "\(appdata.bingo) of \(all ?? 0) correct!"
         // Do any additional setup after loading the view, typically from a nib.
+        if all == appdata.bingo {
+            finished.text = "PERFECT!"
+        } else {
+            finished.text = "Almost!"
+        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -24,6 +24,19 @@ class AnswerViewController: UIViewController {
             performSegue(withIdentifier: "toNextQuestion", sender: self)
         }
     }
+    
+    @IBAction func swipeLeft(_ sender: Any) {
+        performSegue(withIdentifier: "back", sender: self)
+    }
+    
+    @IBAction func swipeRight(_ sender: Any) {
+        if appdata.currentQIndex >= (appdata.questions[appdata.currentTopic]?.count)! {
+            performSegue(withIdentifier: "toFinished", sender: self)
+        } else {
+            performSegue(withIdentifier: "toNextQuestion", sender: self)
+        }
+    }
+    //@IBOutlet var swipeRight: UISwipeGestureRecognizer!
     override func viewDidLoad() {
         super.viewDidLoad()
         correctAnswer.text = "The Correct Answer is: " + appdata.correctAns[appdata.currentQuestion]!
