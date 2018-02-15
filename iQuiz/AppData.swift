@@ -11,6 +11,9 @@ import UIKit
 class AppData: NSObject {
     static let shared = AppData()
     open var bingo = 0
+    open var currentQIndex = 0
+    open var currentQuestion = String()
+    open var currentTopic = String()
     open var categories : [String] = ["Mathematics", "Marvel Super Heroes", "Science"]
     open var descriptions : [String] = ["TikTac your calculator is waiting!", "let's save the world together!", "BANG!BOOM!"]
     //open var questions = [ Question(topic: "Mathematics", questions: ["question1", "question2"]), Question(topic: "Marvel Super Heroes", questions: ["question1"]), Question(topic: "Science", questions: ["Q1"])]

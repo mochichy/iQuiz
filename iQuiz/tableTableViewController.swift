@@ -34,6 +34,8 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         tableView.dataSource = self
         tableView.delegate = self
         print(appdata.bingo)
+        appdata.bingo = 0
+        appdata.currentQIndex = 0
 
         // Do any additional setup after loading the view.
     }
@@ -88,6 +90,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         /*let talkView = segue.destination as! ViewController
         talkView.history = history*/
         let selectedRow = tableView.indexPathForSelectedRow!.row
+        appdata.currentTopic = appdata.categories[selectedRow]
         
         if (segue.identifier == "qseg") {
             let viewController = segue.destination as! questionTableViewController

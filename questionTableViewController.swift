@@ -15,7 +15,7 @@ class questionTableViewController: UIViewController, UITableViewDataSource, UITa
     
     @IBOutlet weak var tableView: UITableView!
     var appdata = AppData.shared
-    var currentQ = String()
+    var currentTopic = String()
     var selected = String()
     var questionIndex: Int?
     
@@ -31,14 +31,14 @@ class questionTableViewController: UIViewController, UITableViewDataSource, UITa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         NSLog("\(indexPath)")
         let cell = tableView.dequeueReusableCell(withIdentifier: "potentialCell", for: indexPath) as! TableViewCell
-        let potential = appdata.potentialAns[currentQ]![indexPath.row]
+        let potential = appdata.potentialAns[appdata.currentQuestion]![indexPath.row]
         cell.potentialA.text = potential
         NSLog("\(potential)")
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selected = appdata.potentialAns[currentQ]![indexPath.row]
+        selected = appdata.potentialAns[appdata.currentQuestion]![indexPath.row]
         NSLog("User selected row at \(selected)")
     }
     
@@ -55,15 +55,18 @@ class questionTableViewController: UIViewController, UITableViewDataSource, UITa
     }*/
     
     override func viewWillAppear(_ animated: Bool) {
-        question.text = stringPassed
+        //question.text = stringPassed
+        question.text = appdata.currentTopic
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        q.text = appdata.questions[stringPassed]?[0]
-        currentQ = (appdata.questions[stringPassed]?[0])!
-        NSLog("\(appdata.potentialAns[currentQ]![0])")
+        appdata.currentQuestion = appdata.questions[appdata.currentTopic]![appdata.currentQIndex]
+        //q.text = appdata.questions[stringPassed]?[0]
+        q.text = appdata.currentQuestion
+        //currentQ = (appdata.questions[stringPassed]?[0])!
+        //NSLog("\(appdata.potentialAns[currentQ]![0])")
         // Do any additional setup after loading the view.
     }
 
@@ -80,7 +83,7 @@ class questionTableViewController: UIViewController, UITableViewDataSource, UITa
             let viewController = segue.destination as! AnswerViewController
             
             viewController.userAnswer = selected
-            viewController.currentQuestion = currentQ
+            //viewController.currentQuestion = currentQ
         }
     }
     

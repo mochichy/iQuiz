@@ -10,8 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
     var appdata = AppData.shared
+    
+    @IBOutlet weak var score: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let all = appdata.questions[appdata.currentTopic]?.count
+        score.text = "\(appdata.bingo) of \(all ?? 0) correct!"
         // Do any additional setup after loading the view, typically from a nib.
     }
 
