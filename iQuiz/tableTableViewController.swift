@@ -33,6 +33,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         print(appdata.categories)
         tableView.dataSource = self
         tableView.delegate = self
+        print(appdata.bingo)
 
         // Do any additional setup after loading the view.
     }
@@ -92,6 +93,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             let viewController = segue.destination as! questionTableViewController
 
             viewController.stringPassed = appdata.categories[selectedRow]
+            viewController.questionIndex = 0
         }
     }
     /*

@@ -17,6 +17,7 @@
 		EF6191CA2030E3D100D50B3B /* tableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6191C92030E3D100D50B3B /* tableTableViewController.swift */; };
 		EF6191CC2030E41F00D50B3B /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6191CB2030E41F00D50B3B /* TableViewCell.swift */; };
 		EF6191CE2030E49A00D50B3B /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6191CD2030E49A00D50B3B /* AppData.swift */; };
+		EF9D131F20350BBA0098F4BF /* AnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9D131E20350BBA0098F4BF /* AnswerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		EF6191C92030E3D100D50B3B /* tableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableTableViewController.swift; sourceTree = "<group>"; };
 		EF6191CB2030E41F00D50B3B /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		EF6191CD2030E49A00D50B3B /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		EF9D131E20350BBA0098F4BF /* AnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				EF6191B72030E36F00D50B3B /* AppDelegate.swift */,
 				EF6191B92030E36F00D50B3B /* ViewController.swift */,
 				EF6191BB2030E36F00D50B3B /* Main.storyboard */,
+				EF9D131E20350BBA0098F4BF /* AnswerViewController.swift */,
 				EF2C12662032B93000912B4E /* questionTableViewController.swift */,
 				EF6191CD2030E49A00D50B3B /* AppData.swift */,
 				EF2C12682033B68900912B4E /* Answer.swift */,
@@ -155,6 +158,7 @@
 				EF2C12672032B93000912B4E /* questionTableViewController.swift in Sources */,
 				EF6191CC2030E41F00D50B3B /* TableViewCell.swift in Sources */,
 				EF2C12692033B68900912B4E /* Answer.swift in Sources */,
+				EF9D131F20350BBA0098F4BF /* AnswerViewController.swift in Sources */,
 				EF6191BA2030E36F00D50B3B /* ViewController.swift in Sources */,
 				EF6191B82030E36F00D50B3B /* AppDelegate.swift in Sources */,
 				EF6191CE2030E49A00D50B3B /* AppData.swift in Sources */,

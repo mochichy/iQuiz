@@ -17,6 +17,7 @@ class questionTableViewController: UIViewController, UITableViewDataSource, UITa
     var appdata = AppData.shared
     var currentQ = String()
     var selected = String()
+    var questionIndex: Int?
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -42,6 +43,16 @@ class questionTableViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     
+    /*@IBAction func btnSubmut(_ sender: Any) {
+    }*/
+    
+    @IBAction func btnSubmit(_ sender: Any) {
+        
+    }
+    
+    /*override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+       return false
+    }*/
     
     override func viewWillAppear(_ animated: Bool) {
         question.text = stringPassed
@@ -59,6 +70,18 @@ class questionTableViewController: UIViewController, UITableViewDataSource, UITa
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        /*let talkView = segue.destination as! ViewController
+         talkView.history = history*/
+        if (segue.identifier == "showAnswer") {
+            let viewController = segue.destination as! AnswerViewController
+            
+            viewController.userAnswer = selected
+            viewController.currentQuestion = currentQ
+        }
     }
     
 
