@@ -12,6 +12,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
 
     @IBOutlet weak var tableView: UITableView!
     var appdata = AppData.shared
+    
     //let topic = ["Mathematics", "Marvel Super Heroes", "Science"]
     
     var valueToPass: String!
@@ -29,6 +30,43 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     
     
     override func viewDidLoad() {
+        //appdata.makeHTTPGetRequest()
+        let url = URL(string: "https://tednewardsandbox.site44.com/questions.json")
+        let urlSession = URLSession(configuration: .default)
+        let task = urlSession.dataTask(with: url!) {(data, response, error) in
+            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
+            do {
+                if let jsonObj = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSArray {
+                    //print(jsonObj)
+                    //print(jsonObj[0])
+                    for topic in jsonObj {
+                        let topicDict = topic as? NSDictionary
+                        print(topicDict!["title"] as! NSString)
+                        self.appdata.categories.append(topicDict!["title"] as! String)
+                        print(self.appdata.categories)
+                    }
+                    DispatchQueue.main.async{
+                        self.tableView.reloadData()
+                    }
+                }
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+
+        OperationQueue.main.addOperation({
+            //calling another function after fetching the json
+            //it will show the names to label
+            self.after()
+        })
+
+
+        // Do any additional setup after loading the view.
+    }
+    
+    func after() {
+        //appdata.categories.append("haha")
         super.viewDidLoad()
         print(appdata.categories)
         tableView.dataSource = self
@@ -36,10 +74,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         print(appdata.bingo)
         appdata.bingo = 0
         appdata.currentQIndex = 0
-
-        // Do any additional setup after loading the view.
     }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

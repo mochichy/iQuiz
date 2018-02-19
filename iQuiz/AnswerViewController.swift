@@ -48,7 +48,6 @@ class AnswerViewController: UIViewController {
             yesNo.text = "UHOH..."
         }
         appdata.currentQIndex = appdata.currentQIndex + 1
-        
         // Do any additional setup after loading the view.
     }
 
