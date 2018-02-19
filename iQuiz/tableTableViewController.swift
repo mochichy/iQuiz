@@ -19,18 +19,23 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     //@IBOutlet weak var btnSetting: UIBarButtonItem!
     @IBAction func btnSetting(_ sender: Any) {
         let alertVC = UIAlertController(title: "Settings",
-                                        message: "Settings go here",
+                                        message: "Get quiz data from web",
                                         preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
             alertVC.dismiss(animated: true)
         })
+        let checkButton = UIAlertAction(title: "Check", style: .default, handler: {(_ action: UIAlertAction) -> Void in
+            print("you pressed check button")
+            self.getHttp()
+            
+            // call method whatever u need
+        })
+        alertVC.addAction(checkButton)
         self.present(alertVC, animated: true)
 
     }
     
-    
-    override func viewDidLoad() {
-        //appdata.makeHTTPGetRequest()
+    func getHttp() {
         let url = URL(string: "https://tednewardsandbox.site44.com/questions.json")
         let urlSession = URLSession(configuration: .default)
         let task = urlSession.dataTask(with: url!) {(data, response, error) in
@@ -68,6 +73,48 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             }
         }
         task.resume()
+    }
+    
+    
+    override func viewDidLoad() {
+        //appdata.makeHTTPGetRequest()
+        /*let url = URL(string: "https://tednewardsandbox.site44.com/questions.json")
+        let urlSession = URLSession(configuration: .default)
+        let task = urlSession.dataTask(with: url!) {(data, response, error) in
+            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
+            do {
+                if let jsonObj = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSArray {
+                    //print(jsonObj)
+                    //print(jsonObj[0])
+                    for topic in jsonObj {
+                        let topicDict = topic as? NSDictionary
+                        //print(topicDict!["title"] as! NSString)
+                        self.appdata.categories.append(topicDict!["title"] as! String)
+                        self.appdata.descriptions.append(topicDict!["desc"] as! String)
+                        //print(self.appdata.categories)
+                        let topicQs = topicDict!["questions"] as? NSArray
+                        var temp = [String]()
+                        for question in topicQs! {
+                            
+                            let questionDict = question as? NSDictionary
+                            temp.append(questionDict!["text"] as! String)
+                            self.appdata.potentialAns[questionDict!["text"] as! String] = (questionDict!["answers"] as! [String])
+                            let ind = Int(questionDict!["answer"] as! String)
+                            self.appdata.correctAns[questionDict!["text"] as! String] = self.appdata.potentialAns[questionDict!["text"] as! String]?[ind!]
+                        }
+                        self.appdata.questions[topicDict!["title"] as! String] = temp
+                        
+                    }
+                    
+                    DispatchQueue.main.async{
+                        self.tableView.reloadData()
+                    }
+                }
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()*/
 
         OperationQueue.main.addOperation({
             //calling another function after fetching the json
