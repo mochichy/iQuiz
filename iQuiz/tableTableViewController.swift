@@ -41,10 +41,24 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
                     //print(jsonObj[0])
                     for topic in jsonObj {
                         let topicDict = topic as? NSDictionary
-                        print(topicDict!["title"] as! NSString)
+                        //print(topicDict!["title"] as! NSString)
                         self.appdata.categories.append(topicDict!["title"] as! String)
-                        print(self.appdata.categories)
+                        self.appdata.descriptions.append(topicDict!["desc"] as! String)
+                        //print(self.appdata.categories)
+                        let topicQs = topicDict!["questions"] as? NSArray
+                        var temp = [String]()
+                        for question in topicQs! {
+                            
+                            let questionDict = question as? NSDictionary
+                            temp.append(questionDict!["text"] as! String)
+                            self.appdata.potentialAns[questionDict!["text"] as! String] = (questionDict!["answers"] as! [String])
+                            let ind = Int(questionDict!["answer"] as! String)
+                            self.appdata.correctAns[questionDict!["text"] as! String] = self.appdata.potentialAns[questionDict!["text"] as! String]?[ind!]
+                        }
+                        self.appdata.questions[topicDict!["title"] as! String] = temp
+                        
                     }
+                    
                     DispatchQueue.main.async{
                         self.tableView.reloadData()
                     }

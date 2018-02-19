@@ -16,13 +16,13 @@ class AppData: NSObject {
     open var currentQuestion = String()
     open var currentTopic = String()
     open var categories = [String]()//["Mathematics", "Marvel Super Heroes", "Science"]
-    open var descriptions : [String] = ["TikTac your calculator is waiting!", "let's save the world together!", "BANG!BOOM!"]
-    //open var questions = [ Question(topic: "Mathematics", questions: ["question1", "question2"]), Question(topic: "Marvel Super Heroes", questions: ["question1"]), Question(topic: "Science", questions: ["Q1"])]
+    open var descriptions : [String] = [String]()//["TikTac your calculator is waiting!", "let's save the world together!", "BANG!BOOM!"]
+    //open var questions = [ Question(topic: "Mathematics", questions: ["question1", "question2"]), Question(topic: "Marvel Super Heroes", questions: ["question1"]), Question(topic: "Science!", questions: ["Q1"])]
     
-    open var questions : [String: [String]] =
-        ["Mathematics":["math question1", "math question2"],
+    open var questions : [String: [String]] = [String: [String]]()
+        /*["Mathematics":["math question1", "math question2"],
          "Marvel Super Heroes":["hero question1"],
-         "Science":["science question1"]]
+         "Science!":["science question1"]]*/
     
     open var potentialAns : [String: [String]] =
         ["math question1": ["12", "0", "100", "83"],
