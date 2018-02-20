@@ -36,7 +36,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func getHttp() {
-        let url = URL(string: "https://tednewardsandbox.site44.com/questions.json")
+        let url = URL(string: "https://tednewardsandbox.site44.com/qu")
         let urlSession = URLSession(configuration: .default)
         let task = urlSession.dataTask(with: url!) {(data, response, error) in
             //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
@@ -76,6 +76,14 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
                 }
             } catch let error as NSError {
                 print(error.localizedDescription)
+                let alertVC = UIAlertController(title: "Download",
+                                                message: "Download Failed",
+                                                preferredStyle: .alert)
+                alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                    alertVC.dismiss(animated: true)
+                })
+                self.present(alertVC, animated: true)
+                
             }
         }
         task.resume()
