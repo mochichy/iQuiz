@@ -24,7 +24,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
             alertVC.dismiss(animated: true)
         })
-        let checkButton = UIAlertAction(title: "Check", style: .default, handler: {(_ action: UIAlertAction) -> Void in
+        let checkButton = UIAlertAction(title: "Check Now", style: .default, handler: {(_ action: UIAlertAction) -> Void in
             print("you pressed check button")
             self.getHttp()
             
@@ -44,6 +44,12 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
                 if let jsonObj = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSArray {
                     //print(jsonObj)
                     //print(jsonObj[0])
+                    if jsonObj.write(toFile: NSHomeDirectory() + "/Documents/quiz", atomically: true) {
+                        NSLog(NSHomeDirectory())
+                        NSLog("Quiz written")
+                    } else {
+                        NSLog("Quiz write failed")
+                    }
                     for topic in jsonObj {
                         let topicDict = topic as? NSDictionary
                         //print(topicDict!["title"] as! NSString)
