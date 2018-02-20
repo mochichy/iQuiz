@@ -17,6 +17,7 @@
 		EF6191CA2030E3D100D50B3B /* tableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6191C92030E3D100D50B3B /* tableTableViewController.swift */; };
 		EF6191CC2030E41F00D50B3B /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6191CB2030E41F00D50B3B /* TableViewCell.swift */; };
 		EF6191CE2030E49A00D50B3B /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6191CD2030E49A00D50B3B /* AppData.swift */; };
+		EF751581203C0237005C61E9 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF751580203C0237005C61E9 /* Reachability.swift */; };
 		EF9D131F20350BBA0098F4BF /* AnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9D131E20350BBA0098F4BF /* AnswerViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		EF6191C92030E3D100D50B3B /* tableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableTableViewController.swift; sourceTree = "<group>"; };
 		EF6191CB2030E41F00D50B3B /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		EF6191CD2030E49A00D50B3B /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		EF751580203C0237005C61E9 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		EF9D131E20350BBA0098F4BF /* AnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -50,6 +52,7 @@
 		EF6191AB2030E36F00D50B3B = {
 			isa = PBXGroup;
 			children = (
+				EF751580203C0237005C61E9 /* Reachability.swift */,
 				EF6191B62030E36F00D50B3B /* iQuiz */,
 				EF6191B52030E36F00D50B3B /* Products */,
 			);
@@ -159,6 +162,7 @@
 				EF6191CC2030E41F00D50B3B /* TableViewCell.swift in Sources */,
 				EF2C12692033B68900912B4E /* Answer.swift in Sources */,
 				EF9D131F20350BBA0098F4BF /* AnswerViewController.swift in Sources */,
+				EF751581203C0237005C61E9 /* Reachability.swift in Sources */,
 				EF6191BA2030E36F00D50B3B /* ViewController.swift in Sources */,
 				EF6191B82030E36F00D50B3B /* AppDelegate.swift in Sources */,
 				EF6191CE2030E49A00D50B3B /* AppData.swift in Sources */,

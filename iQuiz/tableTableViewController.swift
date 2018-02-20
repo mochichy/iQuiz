@@ -26,7 +26,10 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         })
         let checkButton = UIAlertAction(title: "Check Now", style: .default, handler: {(_ action: UIAlertAction) -> Void in
             print("you pressed check button")
-            self.getHttp()
+            if(self.checkInternet()) {
+                self.getHttp()
+            }
+            
             
             // call method whatever u need
         })
@@ -35,8 +38,18 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
 
     }
     
+    func checkInternet() -> Bool {
+        if Reachability.isConnectedToNetwork(){
+            print("Internet Connection Available!")
+            return true
+        }
+        print("Internet Connection not Available!")
+        return false
+        
+    }
+    
     func getHttp() {
-        let url = URL(string: "https://tednewardsandbox.site44.com/qu")
+        let url = URL(string: "https://tednewardsandbox.site44.com/questions.json")
         let urlSession = URLSession(configuration: .default)
         let task = urlSession.dataTask(with: url!) {(data, response, error) in
             //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
