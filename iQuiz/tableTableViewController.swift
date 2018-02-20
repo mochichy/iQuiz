@@ -28,6 +28,14 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             print("you pressed check button")
             if(self.checkInternet()) {
                 self.getHttp()
+            } else {
+                let alertVC = UIAlertController(title: "Network",
+                                                message: "Network is not available",
+                                                preferredStyle: .alert)
+                alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                    alertVC.dismiss(animated: true)
+                })
+                self.present(alertVC, animated: true)
             }
             
             
