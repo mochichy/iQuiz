@@ -25,15 +25,9 @@ class AppData: NSObject {
          "Science!":["science question1"]]*/
     
     open var potentialAns : [String: [String]] =
-        ["math question1": ["12", "0", "100", "83"],
-         "math question2": ["0", "1", "2", "10"],
-         "hero question1": ["hero1", "hero2", "hero3", "hero4"],
-         "science question1": ["s1", "s2", "s3", "s4"]]
+        [String: [String]]()
     open var correctAns : [String:String] =
-        ["math question1": "0",
-         "math question2": "1",
-         "hero question1": "hero4",
-         "science question1": "s3"]
+        [String: String]()
     
     func makeHTTPGetRequest() {
         var this = categories

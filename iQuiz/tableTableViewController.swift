@@ -122,11 +122,13 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
                 let questionDict = question as? NSDictionary
                 temp.append(questionDict!["text"] as! String)
                 self.appdata.potentialAns[questionDict!["text"] as! String] = (questionDict!["answers"] as! [String])
-                let ind = Int(questionDict!["answer"] as! String)
-                self.appdata.correctAns[questionDict!["text"] as! String] = self.appdata.potentialAns[questionDict!["text"] as! String]?[ind!]
+                let ind = Int(questionDict!["answer"] as! String)! - 1
+                self.appdata.correctAns[questionDict!["text"] as! String] = self.appdata.potentialAns[questionDict!["text"] as! String]?[ind]
             }
             self.appdata.questions[topicDict!["title"] as! String] = temp
         }
+        print(self.appdata.potentialAns)
+        print(self.appdata.correctAns)
     }
     
     
