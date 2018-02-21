@@ -30,12 +30,26 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
                 self.getHttp()
             } else {
                 let alertVC = UIAlertController(title: "Network",
-                                                message: "Network is not available",
+                                                message: "Network is not available. Using local storage data",
                                                 preferredStyle: .alert)
                 alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
                     alertVC.dismiss(animated: true)
                 })
                 self.present(alertVC, animated: true)
+
+                let DocumentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                
+                let fileURL = DocumentDirURL.appendingPathComponent("quiz")
+                
+                do {
+                    // Read the file contents
+                    let d = try NSArray(contentsOf: fileURL) as! NSArray
+                    print(d)
+                    self.processData(jsonObj: d)
+                } catch let error as NSError {
+                    print("Failed reading from URL: \(fileURL), Error: " + error.localizedDescription)
+                }
+            
             }
             
             
@@ -59,6 +73,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     func getHttp() {
         let url = URL(string: "https://tednewardsandbox.site44.com/questions.json")
         let urlSession = URLSession(configuration: .default)
+        
         let task = urlSession.dataTask(with: url!) {(data, response, error) in
             //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
             do {
@@ -71,25 +86,8 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
                     } else {
                         NSLog("Quiz write failed")
                     }
-                    for topic in jsonObj {
-                        let topicDict = topic as? NSDictionary
-                        //print(topicDict!["title"] as! NSString)
-                        self.appdata.categories.append(topicDict!["title"] as! String)
-                        self.appdata.descriptions.append(topicDict!["desc"] as! String)
-                        //print(self.appdata.categories)
-                        let topicQs = topicDict!["questions"] as? NSArray
-                        var temp = [String]()
-                        for question in topicQs! {
-                            
-                            let questionDict = question as? NSDictionary
-                            temp.append(questionDict!["text"] as! String)
-                            self.appdata.potentialAns[questionDict!["text"] as! String] = (questionDict!["answers"] as! [String])
-                            let ind = Int(questionDict!["answer"] as! String)
-                            self.appdata.correctAns[questionDict!["text"] as! String] = self.appdata.potentialAns[questionDict!["text"] as! String]?[ind!]
-                        }
-                        self.appdata.questions[topicDict!["title"] as! String] = temp
-                        
-                    }
+
+                    self.processData(jsonObj: jsonObj)
                     
                     DispatchQueue.main.async{
                         self.tableView.reloadData()
@@ -110,46 +108,29 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         task.resume()
     }
     
+    func processData(jsonObj : NSArray) {
+        for topic in jsonObj {
+            let topicDict = topic as? NSDictionary
+            //print(topicDict!["title"] as! NSString)
+            self.appdata.categories.append(topicDict!["title"] as! String)
+            self.appdata.descriptions.append(topicDict!["desc"] as! String)
+            //print(self.appdata.categories)
+            let topicQs = topicDict!["questions"] as? NSArray
+            var temp = [String]()
+            for question in topicQs! {
+                
+                let questionDict = question as? NSDictionary
+                temp.append(questionDict!["text"] as! String)
+                self.appdata.potentialAns[questionDict!["text"] as! String] = (questionDict!["answers"] as! [String])
+                let ind = Int(questionDict!["answer"] as! String)
+                self.appdata.correctAns[questionDict!["text"] as! String] = self.appdata.potentialAns[questionDict!["text"] as! String]?[ind!]
+            }
+            self.appdata.questions[topicDict!["title"] as! String] = temp
+        }
+    }
+    
     
     override func viewDidLoad() {
-        //appdata.makeHTTPGetRequest()
-        /*let url = URL(string: "https://tednewardsandbox.site44.com/questions.json")
-        let urlSession = URLSession(configuration: .default)
-        let task = urlSession.dataTask(with: url!) {(data, response, error) in
-            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
-            do {
-                if let jsonObj = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSArray {
-                    //print(jsonObj)
-                    //print(jsonObj[0])
-                    for topic in jsonObj {
-                        let topicDict = topic as? NSDictionary
-                        //print(topicDict!["title"] as! NSString)
-                        self.appdata.categories.append(topicDict!["title"] as! String)
-                        self.appdata.descriptions.append(topicDict!["desc"] as! String)
-                        //print(self.appdata.categories)
-                        let topicQs = topicDict!["questions"] as? NSArray
-                        var temp = [String]()
-                        for question in topicQs! {
-                            
-                            let questionDict = question as? NSDictionary
-                            temp.append(questionDict!["text"] as! String)
-                            self.appdata.potentialAns[questionDict!["text"] as! String] = (questionDict!["answers"] as! [String])
-                            let ind = Int(questionDict!["answer"] as! String)
-                            self.appdata.correctAns[questionDict!["text"] as! String] = self.appdata.potentialAns[questionDict!["text"] as! String]?[ind!]
-                        }
-                        self.appdata.questions[topicDict!["title"] as! String] = temp
-                        
-                    }
-                    
-                    DispatchQueue.main.async{
-                        self.tableView.reloadData()
-                    }
-                }
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
-        }
-        task.resume()*/
 
         OperationQueue.main.addOperation({
             //calling another function after fetching the json
@@ -170,6 +151,13 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         print(appdata.bingo)
         appdata.bingo = 0
         appdata.currentQIndex = 0
+        //print(DocumentDirURL.appendingPathComponent("quiz"))
+        //print(NSHomeDirectory())
+        
+        
+        // testing DELETE IT LATER
+
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -197,22 +185,6 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let topic = appdata.categories[indexPath.row]
         NSLog("User selected row at \(topic)")
-        //let myVC = storyboard?.instantiateViewController(withIdentifier: "questionVC") as! questionTableViewController
-        
-       /* let myVC = questionTableViewController()
-        print(myVC)
-        myVC.stringPassed = "?"
-        navigationController?.pushViewController(myVC, animated: true)
-        let Storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let destinationVC = Storyboard.instantiateViewController(withIdentifier: "questionVC") as! questionTableViewController
-        let destinationVC = questionTableViewController()
-        destinationVC.stringPassed = "?"
-        self.performSegue(withIdentifier: "qseg", sender: self)
-        let indexPath = tableView.indexPathForSelectedRow!
-        let currentCell = tableView.cellForRow(at: indexPath)! as UITableViewCell
-        
-        valueToPass = currentCell.textLabel?.text
-        performSegue(withIdentifier: "qseg", sender: self)*/
         
     }
     
