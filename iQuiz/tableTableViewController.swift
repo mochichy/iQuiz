@@ -13,10 +13,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     @IBOutlet weak var tableView: UITableView!
     var appdata = AppData.shared
     
-    //let topic = ["Mathematics", "Marvel Super Heroes", "Science"]
-    
     var valueToPass: String!
-    //@IBOutlet weak var btnSetting: UIBarButtonItem!
     @IBAction func btnSetting(_ sender: Any) {
         let alertVC = UIAlertController(title: "Settings",
                                         message: "Get quiz data from web",
@@ -29,6 +26,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             if(self.checkInternet()) {
                 self.getHttp()
             } else {
+                self.offline()
                 let alertVC = UIAlertController(title: "Network",
                                                 message: "Network is not available. Using local storage data",
                                                 preferredStyle: .alert)
@@ -36,28 +34,28 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
                     alertVC.dismiss(animated: true)
                 })
                 self.present(alertVC, animated: true)
-
-                let DocumentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-                
-                let fileURL = DocumentDirURL.appendingPathComponent("quiz")
-                
-                do {
-                    // Read the file contents
-                    let d = try NSArray(contentsOf: fileURL) as! NSArray
-                    print(d)
-                    self.processData(jsonObj: d)
-                } catch let error as NSError {
-                    print("Failed reading from URL: \(fileURL), Error: " + error.localizedDescription)
-                }
-            
             }
             
-            
-            // call method whatever u need
         })
         alertVC.addAction(checkButton)
         self.present(alertVC, animated: true)
 
+    }
+    
+    func offline() {
+
+        let DocumentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        
+        let fileURL = DocumentDirURL.appendingPathComponent("quiz")
+        
+        do {
+            // Read the file contents
+            let d = try NSArray(contentsOf: fileURL) as! NSArray
+            print(d)
+            self.processData(jsonObj: d)
+        } catch let error as NSError {
+            print("Failed reading from URL: \(fileURL), Error: " + error.localizedDescription)
+        }
     }
     
     func checkInternet() -> Bool {
@@ -75,11 +73,9 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         let urlSession = URLSession(configuration: .default)
         
         let task = urlSession.dataTask(with: url!) {(data, response, error) in
-            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
             do {
                 if let jsonObj = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as? NSArray {
-                    //print(jsonObj)
-                    //print(jsonObj[0])
+
                     if jsonObj.write(toFile: NSHomeDirectory() + "/Documents/quiz", atomically: true) {
                         NSLog(NSHomeDirectory())
                         NSLog("Quiz written")
@@ -89,9 +85,9 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
 
                     self.processData(jsonObj: jsonObj)
                     
-                    DispatchQueue.main.async{
+                    /*DispatchQueue.main.async{
                         self.tableView.reloadData()
-                    }
+                    }*/
                 }
             } catch let error as NSError {
                 print(error.localizedDescription)
@@ -111,10 +107,8 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     func processData(jsonObj : NSArray) {
         for topic in jsonObj {
             let topicDict = topic as? NSDictionary
-            //print(topicDict!["title"] as! NSString)
             self.appdata.categories.append(topicDict!["title"] as! String)
             self.appdata.descriptions.append(topicDict!["desc"] as! String)
-            //print(self.appdata.categories)
             let topicQs = topicDict!["questions"] as? NSArray
             var temp = [String]()
             for question in topicQs! {
@@ -127,40 +121,37 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             }
             self.appdata.questions[topicDict!["title"] as! String] = temp
         }
+        DispatchQueue.main.async{
+            self.tableView.reloadData()
+        }
+    
         print(self.appdata.potentialAns)
         print(self.appdata.correctAns)
     }
     
     
     override func viewDidLoad() {
-
-        OperationQueue.main.addOperation({
-            //calling another function after fetching the json
-            //it will show the names to label
-            self.after()
-        })
-
-
-        // Do any additional setup after loading the view.
-    }
-    
-    func after() {
-        //appdata.categories.append("haha")
         super.viewDidLoad()
-        print(appdata.categories)
         tableView.dataSource = self
         tableView.delegate = self
-        print(appdata.bingo)
         appdata.bingo = 0
         appdata.currentQIndex = 0
-        //print(DocumentDirURL.appendingPathComponent("quiz"))
-        //print(NSHomeDirectory())
-        
-        
-        // testing DELETE IT LATER
 
-        
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if(!checkInternet() && self.appdata.categories.count == 0) {
+            let alertVC = UIAlertController(title: "Network",
+                                            message: "Network is not available. Using local storage data",
+                                            preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                self.offline()
+                alertVC.dismiss(animated: true)
+            })
+            self.present(alertVC, animated: true)
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -192,8 +183,6 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        /*let talkView = segue.destination as! ViewController
-        talkView.history = history*/
         let selectedRow = tableView.indexPathForSelectedRow!.row
         appdata.currentTopic = appdata.categories[selectedRow]
         
