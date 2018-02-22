@@ -71,6 +71,11 @@
                                             <action selector="btnSetting:" destination="BYZ-38-t0r" id="cc6-f1-HDO"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Scores" id="f5u-mp-E6x">
+                                        <connections>
+                                            <action selector="btnScores:" destination="BYZ-38-t0r" id="TUH-3Q-hwh"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -326,6 +331,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="OfC-1V-tgG"/>
-        <segue reference="VSt-n9-CFK"/>
+        <segue reference="TQJ-gu-DGM"/>
     </inferredMetricsTieBreakers>
 </document>

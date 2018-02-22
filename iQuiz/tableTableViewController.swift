@@ -12,11 +12,11 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
 
     @IBOutlet weak var tableView: UITableView!
     var appdata = AppData.shared
-    
+    let refreshControl = UIRefreshControl()
     var valueToPass: String!
     @IBAction func btnSetting(_ sender: Any) {
         let alertVC = UIAlertController(title: "Settings",
-                                        message: "Get quiz data from web",
+                                        message: "Get quiz data from https://tednewardsandbox.site44.com/questions.json",
                                         preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
             alertVC.dismiss(animated: true)
@@ -39,7 +39,15 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         })
         alertVC.addAction(checkButton)
         self.present(alertVC, animated: true)
-
+    }
+    
+    @IBAction func btnScores(_ sender: Any) {
+        let alertVC = UIAlertController(title: "Scores",
+                                        message: "See your scores below",
+                                        preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            alertVC.dismiss(animated: true)
+        })
     }
     
     func offline() {
@@ -133,6 +141,11 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        
+        // this is the replacement of implementing: "collectionView.addSubview(refreshControl)"
+        tableView.refreshControl = refreshControl
         NotificationCenter.default.addObserver(self, selector:#selector(doSomething), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         doSomething()
         tableView.dataSource = self
@@ -142,8 +155,26 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
 
     }
     
-    @objc func doSomething() {
-        print("doSomething")
+    @objc func refresh() {
+        resetAppData()
+        if(self.checkInternet()) {
+            self.getHttp()
+        } else {
+            self.offline()
+            let alertVC = UIAlertController(title: "Network",
+                                            message: "Network is not available. Using local storage data",
+                                            preferredStyle: .alert)
+            alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                self.refreshControl.endRefreshing()
+                alertVC.dismiss(animated: true)
+            })
+            self.present(alertVC, animated: true)
+            self.refreshControl.endRefreshing()
+        }
+        refreshControl.endRefreshing()
+    }
+    
+    func resetAppData() {
         appdata.categories = [String]()
         appdata.descriptions = [String]()
         
@@ -152,6 +183,14 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             [String: [String]]()
         appdata.correctAns =
             [String: String]()
+        DispatchQueue.main.async{
+            self.tableView.reloadData()
+        }
+    }
+    
+    @objc func doSomething() {
+        print("doSomething")
+        resetAppData()
         if UserDefaults.standard.bool(forKey: "enabled_preference") {
             if(self.checkInternet()) {
                 self.getHttp()
@@ -164,10 +203,6 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
                     alertVC.dismiss(animated: true)
                 })
                 self.present(alertVC, animated: true)
-            }
-        } else {
-            DispatchQueue.main.async{
-                self.tableView.reloadData()
             }
         }
     }
