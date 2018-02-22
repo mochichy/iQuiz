@@ -18,6 +18,7 @@
 		EF6191CC2030E41F00D50B3B /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6191CB2030E41F00D50B3B /* TableViewCell.swift */; };
 		EF6191CE2030E49A00D50B3B /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF6191CD2030E49A00D50B3B /* AppData.swift */; };
 		EF751581203C0237005C61E9 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF751580203C0237005C61E9 /* Reachability.swift */; };
+		EF751583203E2990005C61E9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EF751582203E2990005C61E9 /* Settings.bundle */; };
 		EF9D131F20350BBA0098F4BF /* AnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9D131E20350BBA0098F4BF /* AnswerViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		EF6191CB2030E41F00D50B3B /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		EF6191CD2030E49A00D50B3B /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		EF751580203C0237005C61E9 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		EF751582203E2990005C61E9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		EF9D131E20350BBA0098F4BF /* AnswerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,6 +80,7 @@
 				EF2C12682033B68900912B4E /* Answer.swift */,
 				EF6191CB2030E41F00D50B3B /* TableViewCell.swift */,
 				EF6191C92030E3D100D50B3B /* tableTableViewController.swift */,
+				EF751582203E2990005C61E9 /* Settings.bundle */,
 				EF6191BE2030E36F00D50B3B /* Assets.xcassets */,
 				EF6191C02030E36F00D50B3B /* LaunchScreen.storyboard */,
 				EF6191C32030E36F00D50B3B /* Info.plist */,
@@ -144,6 +147,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF751583203E2990005C61E9 /* Settings.bundle in Resources */,
 				EF6191C22030E36F00D50B3B /* LaunchScreen.storyboard in Resources */,
 				EF6191BF2030E36F00D50B3B /* Assets.xcassets in Resources */,
 				EF6191BD2030E36F00D50B3B /* Main.storyboard in Resources */,

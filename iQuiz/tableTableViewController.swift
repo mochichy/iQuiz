@@ -132,6 +132,9 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        NotificationCenter.default.addObserver(self, selector:#selector(doSomething), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        doSomething()
         tableView.dataSource = self
         tableView.delegate = self
         appdata.bingo = 0
@@ -139,7 +142,38 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
 
     }
     
+    @objc func doSomething() {
+        print("doSomething")
+        appdata.categories = [String]()
+        appdata.descriptions = [String]()
+        
+        appdata.questions = [String: [String]]()
+        appdata.potentialAns =
+            [String: [String]]()
+        appdata.correctAns =
+            [String: String]()
+        if UserDefaults.standard.bool(forKey: "enabled_preference") {
+            if(self.checkInternet()) {
+                self.getHttp()
+            } else {
+                self.offline()
+                let alertVC = UIAlertController(title: "Network",
+                                                message: "Network is not available. Using local storage data",
+                                                preferredStyle: .alert)
+                alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                    alertVC.dismiss(animated: true)
+                })
+                self.present(alertVC, animated: true)
+            }
+        } else {
+            DispatchQueue.main.async{
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
+        print("viewdidappear")
         if(!checkInternet() && self.appdata.categories.count == 0) {
             let alertVC = UIAlertController(title: "Network",
                                             message: "Network is not available. Using local storage data",
@@ -151,7 +185,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             self.present(alertVC, animated: true)
         }
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
