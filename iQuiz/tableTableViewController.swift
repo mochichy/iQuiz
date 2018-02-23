@@ -263,7 +263,12 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         let descr = appdata.descriptions[indexPath.row]
         cell.title.text = topic
         cell.descr.text = descr
-        cell.img.image = UIImage(named: topic)
+        if appdata.score.index(forKey: topic) != nil && appdata.score[topic] == appdata.questions[topic]?.count  {
+            cell.img.image = UIImage(named: "bingo")
+        } else {
+            cell.img.image = UIImage(named: topic)
+        }
+        
         return cell
     }
     
