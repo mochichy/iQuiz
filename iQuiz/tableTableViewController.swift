@@ -16,15 +16,18 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     var valueToPass: String!
     @IBAction func btnSetting(_ sender: Any) {
         let alertVC = UIAlertController(title: "Settings",
-                                        message: "Get quiz data from https://tednewardsandbox.site44.com/questions.json",
+                                        message: "Get quiz data from ",
                                         preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+        alertVC.addAction(UIAlertAction(title: "Back", style: .default) { _ in
             alertVC.dismiss(animated: true)
         })
         let checkButton = UIAlertAction(title: "Check Now", style: .default, handler: {(_ action: UIAlertAction) -> Void in
             self.resetAppData()
+            let url = alertVC.textFields![0]
+            self.appdata.url = url.text!
+            
             if(self.checkInternet()) {
-                self.getHttp()
+                self.getHttp(Url: url.text!)
             } else {
                 self.offline()
                 let alertVC = UIAlertController(title: "Network",
@@ -37,6 +40,13 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             }
             
         })
+        alertVC.addTextField { (textField: UITextField) in
+            textField.keyboardAppearance = .dark
+            textField.keyboardType = .default
+            textField.autocorrectionType = .default
+            textField.placeholder = "Type in url"
+            textField.clearButtonMode = .whileEditing
+        }
         alertVC.addAction(checkButton)
         self.present(alertVC, animated: true)
     }
@@ -77,9 +87,9 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         
     }
     
-    func getHttp() {
+    func getHttp(Url: String) {
         resetAppData()
-        let url = URL(string: "https://tednewardsandbox.site44.com/questions.json")
+        let url = URL(string: Url)
         let urlSession = URLSession(configuration: .default)
         
         let task = urlSession.dataTask(with: url!) {(data, response, error) in
@@ -161,7 +171,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     @objc func refresh() {
         resetAppData()
         if(self.checkInternet()) {
-            self.getHttp()
+            self.getHttp(Url: appdata.url)
         } else {
             self.offline()
             let alertVC = UIAlertController(title: "Network",
@@ -194,13 +204,16 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     
     @objc func doSomething() {
         if(!appdata.fromQuiz || UserDefaults.standard.bool(forKey: "enabled_preference")) {
+            if UserDefaults.standard.bool(forKey: "enabled_preference") && UserDefaults.standard.string(forKey: "url_preference") != nil && UserDefaults.standard.string(forKey: "url_preference") != "" {
+                self.appdata.url = UserDefaults.standard.string(forKey: "url_preference")!
+            }
             resetAppData()
             DispatchQueue.main.async{
                 self.tableView.reloadData()
             }
             if UserDefaults.standard.bool(forKey: "enabled_preference") {
                 if(self.checkInternet()) {
-                    self.getHttp()
+                    self.getHttp(Url: appdata.url)
                 } else {
                     self.offline()
                     let alertVC = UIAlertController(title: "Network",

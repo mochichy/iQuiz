@@ -11,6 +11,7 @@ import UIKit
 class AppData: NSObject {
     static let shared = AppData()
     
+    open var url = String()
     open var fromQuiz = false
     open var bingo = 0
     open var currentQIndex = 0
