@@ -25,6 +25,13 @@ class ViewController: UIViewController {
         } else {
             finished.text = "Almost!"
         }
+        if appdata.score.index(forKey: appdata.currentTopic) == nil {
+            appdata.score[appdata.currentTopic] = 0
+        }
+        if appdata.bingo > appdata.score[appdata.currentTopic]! {
+            appdata.score[appdata.currentTopic] = appdata.bingo
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {

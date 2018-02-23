@@ -62,6 +62,7 @@ class questionTableViewController: UIViewController, UITableViewDataSource, UITa
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        appdata.fromQuiz = true
         appdata.currentQuestion = appdata.questions[appdata.currentTopic]![appdata.currentQIndex]
         //q.text = appdata.questions[stringPassed]?[0]
         q.text = appdata.currentQuestion

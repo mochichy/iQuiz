@@ -8,8 +8,8 @@
 
 import UIKit
 
-class tableTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+class tableTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate {
+    
     @IBOutlet weak var tableView: UITableView!
     var appdata = AppData.shared
     let refreshControl = UIRefreshControl()
@@ -22,7 +22,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             alertVC.dismiss(animated: true)
         })
         let checkButton = UIAlertAction(title: "Check Now", style: .default, handler: {(_ action: UIAlertAction) -> Void in
-            print("you pressed check button")
+            self.resetAppData()
             if(self.checkInternet()) {
                 self.getHttp()
             } else {
@@ -41,13 +41,14 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         self.present(alertVC, animated: true)
     }
     
+
     @IBAction func btnScores(_ sender: Any) {
-        let alertVC = UIAlertController(title: "Scores",
-                                        message: "See your scores below",
-                                        preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            alertVC.dismiss(animated: true)
-        })
+        performSegue(withIdentifier: "popover", sender: nil)
+        /*let popOverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "scoreVC") as! ScoreViewController
+        self.addChildViewController(popOverVC)
+        popOverVC.view.frame = self.view.frame
+        self.view.addSubview(popOverVC.view)
+        popOverVC.didMove(toParentViewController: self)*/
     }
     
     func offline() {
@@ -77,6 +78,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func getHttp() {
+        resetAppData()
         let url = URL(string: "https://tednewardsandbox.site44.com/questions.json")
         let urlSession = URLSession(configuration: .default)
         
@@ -152,6 +154,7 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
         tableView.delegate = self
         appdata.bingo = 0
         appdata.currentQIndex = 0
+        appdata.fromQuiz = false
 
     }
     
@@ -171,6 +174,9 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             self.present(alertVC, animated: true)
             self.refreshControl.endRefreshing()
         }
+        DispatchQueue.main.async{
+            self.tableView.reloadData()
+        }
         refreshControl.endRefreshing()
     }
     
@@ -183,32 +189,36 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
             [String: [String]]()
         appdata.correctAns =
             [String: String]()
-        DispatchQueue.main.async{
-            self.tableView.reloadData()
-        }
+
     }
     
     @objc func doSomething() {
-        print("doSomething")
-        resetAppData()
-        if UserDefaults.standard.bool(forKey: "enabled_preference") {
-            if(self.checkInternet()) {
-                self.getHttp()
-            } else {
-                self.offline()
-                let alertVC = UIAlertController(title: "Network",
-                                                message: "Network is not available. Using local storage data",
-                                                preferredStyle: .alert)
-                alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                    alertVC.dismiss(animated: true)
-                })
-                self.present(alertVC, animated: true)
+        if(!appdata.fromQuiz || UserDefaults.standard.bool(forKey: "enabled_preference")) {
+            resetAppData()
+            DispatchQueue.main.async{
+                self.tableView.reloadData()
+            }
+            if UserDefaults.standard.bool(forKey: "enabled_preference") {
+                if(self.checkInternet()) {
+                    self.getHttp()
+                } else {
+                    self.offline()
+                    let alertVC = UIAlertController(title: "Network",
+                                                    message: "Network is not available. Using local storage data",
+                                                    preferredStyle: .alert)
+                    alertVC.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                        alertVC.dismiss(animated: true)
+                    })
+                    self.present(alertVC, animated: true)
+                }
+            }
+            DispatchQueue.main.async{
+                self.tableView.reloadData()
             }
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        print("viewdidappear")
         if(!checkInternet() && self.appdata.categories.count == 0) {
             let alertVC = UIAlertController(title: "Network",
                                             message: "Network is not available. Using local storage data",
@@ -252,15 +262,34 @@ class tableTableViewController: UIViewController, UITableViewDataSource, UITable
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        let selectedRow = tableView.indexPathForSelectedRow!.row
-        appdata.currentTopic = appdata.categories[selectedRow]
+
         
         if (segue.identifier == "qseg") {
+            let selectedRow = tableView.indexPathForSelectedRow!.row
+            appdata.currentTopic = appdata.categories[selectedRow]
             let viewController = segue.destination as! questionTableViewController
 
             viewController.stringPassed = appdata.categories[selectedRow]
             viewController.questionIndex = 0
         }
+        
+        if(segue.identifier == "popover") {
+            for t in appdata.categories {
+                if appdata.score.index(forKey: t) == nil {
+                    appdata.score[t] = 0
+                }
+            }
+            let vc = segue.destination
+            vc.preferredContentSize = CGSize(width: 450, height: 350)
+
+            if vc.popoverPresentationController != nil {
+                vc.popoverPresentationController?.delegate = self
+            }
+        }
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
     /*
     // MARK: - Navigation

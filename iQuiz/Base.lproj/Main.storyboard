@@ -71,7 +71,7 @@
                                             <action selector="btnSetting:" destination="BYZ-38-t0r" id="cc6-f1-HDO"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Scores" id="f5u-mp-E6x">
+                                    <barButtonItem title="Highest Scores" id="f5u-mp-E6x">
                                         <connections>
                                             <action selector="btnScores:" destination="BYZ-38-t0r" id="TUH-3Q-hwh"/>
                                         </connections>
@@ -93,6 +93,9 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="uV4-4I-nOy" id="e6N-bP-0Ev"/>
+                        <segue destination="gvD-Bq-0h9" kind="popoverPresentation" identifier="popover" popoverAnchorBarButtonItem="f5u-mp-E6x" id="tFg-Q5-3w4">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -114,12 +117,12 @@
                                     <segue destination="BYZ-38-t0r" kind="show" id="rob-ff-IWh"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Q" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m2W-oc-8eG">
-                                <rect key="frame" x="15" y="94" width="345" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" misplaced="YES" text="Q" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m2W-oc-8eG">
+                                <rect key="frame" x="15" y="94" width="345" height="53"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="345" id="5ww-x4-dtf"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -137,8 +140,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DcJ-is-ywT">
-                                <rect key="frame" x="15" y="158" width="345" height="250"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DcJ-is-ywT">
+                                <rect key="frame" x="15" y="155" width="345" height="250"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="250" id="kcw-N0-oxS"/>
@@ -178,7 +181,7 @@
                         <constraints>
                             <constraint firstItem="DcJ-is-ywT" firstAttribute="leading" secondItem="m2W-oc-8eG" secondAttribute="leading" id="08C-VZ-sL0"/>
                             <constraint firstItem="DcJ-is-ywT" firstAttribute="centerX" secondItem="Xw5-wD-86q" secondAttribute="centerX" id="3M0-c9-Dtp"/>
-                            <constraint firstItem="DcJ-is-ywT" firstAttribute="top" secondItem="m2W-oc-8eG" secondAttribute="bottom" constant="34" id="Arn-Dq-QSB"/>
+                            <constraint firstItem="DcJ-is-ywT" firstAttribute="top" secondItem="m2W-oc-8eG" secondAttribute="bottom" constant="26" id="Arn-Dq-QSB"/>
                             <constraint firstItem="jzc-2P-c6U" firstAttribute="centerX" secondItem="Xw5-wD-86q" secondAttribute="centerX" id="FYK-pZ-0bo"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="f5f-8U-QxM" secondAttribute="trailing" constant="20" symbolic="YES" id="cDC-Jo-kGl"/>
                             <constraint firstItem="f5f-8U-QxM" firstAttribute="top" secondItem="Xw5-wD-86q" secondAttribute="top" id="cNW-gq-aZv"/>
@@ -201,6 +204,53 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K9K-XM-1pd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="914.39999999999998" y="158.77061469265368"/>
+        </scene>
+        <!--Score View Controller-->
+        <scene sceneID="xhf-eI-Tu8">
+            <objects>
+                <viewController storyboardIdentifier="scoreVC" id="gvD-Bq-0h9" customClass="ScoreViewController" customModule="iQuiz" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QIJ-eU-7xJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="okm-qP-btv">
+                                <rect key="frame" x="16" y="20" width="343" height="305"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="scorecell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="scoreCell" id="71g-dJ-4VJ" customClass="TableViewCell" customModule="iQuiz" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="71g-dJ-4VJ" id="eaF-0a-F0F">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TopicScore" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p9w-On-e6n">
+                                                    <rect key="frame" x="15" y="11" width="313" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="topicScore" destination="p9w-On-e6n" id="6uN-Q4-tpx"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.89884563819999996" blue="0.94574774490000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="iia-sV-Unh"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="okm-qP-btv" id="ehK-9i-NPV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8jp-hb-dhF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-452" y="903.59820089955031"/>
         </scene>
         <!--Answer View Controller-->
         <scene sceneID="YID-jO-ELp">
@@ -331,6 +381,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="OfC-1V-tgG"/>
-        <segue reference="TQJ-gu-DGM"/>
+        <segue reference="rob-ff-IWh"/>
     </inferredMetricsTieBreakers>
 </document>

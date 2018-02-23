@@ -11,6 +11,7 @@ import UIKit
 class AppData: NSObject {
     static let shared = AppData()
     
+    open var fromQuiz = false
     open var bingo = 0
     open var currentQIndex = 0
     open var currentQuestion = String()
@@ -28,6 +29,7 @@ class AppData: NSObject {
         [String: [String]]()
     open var correctAns : [String:String] =
         [String: String]()
+    open var score: [String: Int] = [String: Int]()
     
     func makeHTTPGetRequest() {
         var this = categories
